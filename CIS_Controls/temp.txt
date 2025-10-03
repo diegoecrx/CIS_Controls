@@ -1,0 +1,16 @@
+Nome Completo
+1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)
+
+
+Profile Applicability
+"Level 1 - Server
+Level 1 - Workstation"
+
+
+Remediation
+"Edit or create a file in the /etc/modprobe.d/ directory ending in .conf
+Example: vim /etc/modprobe.d/cramfs.conf
+and add the following line:
+install cramfs /bin/true
+Run the following command to unload the cramfs module:
+# rmmod cramfs"
