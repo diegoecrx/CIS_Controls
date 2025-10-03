@@ -1,0 +1,105 @@
+função require_root():
+    se EUID != 0:
+        imprimir "Run as root. Exiting."
+        sair(1)
+
+função ensure_base_dir():
+    se diretório atual != "/CIS_Benchmark":
+        # opcional: permitir execução em outro caminho
+        criar diretório atual se necessário
+
+função ensure_log():
+    se não existe "cis_progress.log" no diretório corrente:
+        criar arquivo vazio "cis_progress.log"
+
+função log_event(controle_id, nome, ação, resultado, mensagem):
+    ts ← agora_UTC_ISO8601()
+    linha ← concat(ts, ",", controle_id, ",", nome, ",", ação, ",", resultado, ",", aspas(mensagem))
+    anexar linha em "cis_progress.log"
+
+função last_execute_status(controle_id) retorna string:
+    ler "cis_progress.log"
+    filtrar linhas onde coluna2 == controle_id e coluna4 == "execute"
+    se vazio: retornar "pending"
+    pegar última por timestamp
+    se coluna5 == "success": retornar "complete"
+    senão retornar "pending"
+
+função item_status_label(controle_id) retorna string:
+    se last_execute_status(controle_id) == "complete":
+        retornar "[complete]"
+    senão retornar "[pending]"
+
+função render_main_menu():
+    limpar_tela()
+    imprimir título, caminho log
+    imprimir:
+        "1  Initial Setup  " + seção_status(1)
+        "2  Services       " + seção_status(2)
+        "3  Network Configuration" + seção_status(3)
+        "4  Logging and Auditing" + seção_status(4)
+        "5  Access, Authentication and Authorization" + seção_status(5)
+        "6  System Maintenance" + seção_status(6)
+    ler opção usuário (1..6)
+    chamar render_submenu(opção)
+
+função seção_status(seção_id):
+    obter lista de controles da seção
+    se todos item_status_label == "[complete]": retornar "[complete]"
+    senão retornar "[pending]"
+
+função render_submenu(seção_id):
+    limpar_tela()
+    listar subitens com seus ids (ex.: "1.1", "1.2", etc.) e status via item_status_label
+    imprimir:
+        "Escolha um controle (ex.: 1.1) ou '0' para voltar"
+    entrada ← ler()
+    se entrada == "0": render_main_menu()
+    senão:
+        chamar submenu_item_actions(entrada)
+
+função submenu_item_actions(controle_id):
+    limpar_tela()
+    imprimir controle_id, nome, status atual
+    imprimir "1 - return"
+    imprimir "2 - remediate"
+    op ← ler()
+    se op == "1": voltar para render_submenu( seção correspondente )
+    se op == "2": executar_remediação(controle_id)
+
+função executar_remediação(controle_id):
+    script ← mapear controle_id → caminho dentro "cis_remediations"
+    se script não existe ou não executável:
+        log_event(controle_id, nome, "execute", "fail", "script missing or not executable")
+        imprimir "Script not found or not executable."
+        esperar_tecla()
+        retornar
+
+    # backup opcional (aquivos alvo definidos pelo script ou mapa)
+    tentar:
+        alvo ← descobrir_arquivos_alvo(controle_id)
+        para cada f em alvo:
+            destino ← backup_path(f)
+            copiar f → destino
+        log_event(controle_id, nome, "backup", "success", "files saved")
+    capturar erro e:
+        log_event(controle_id, nome, "backup", "fail", e.mensagem)
+
+    # executar script
+    rc, stdout, stderr ← rodar("bash", script)
+    se rc == 0:
+        log_event(controle_id, nome, "execute", "success", stdout)
+    senão:
+        log_event(controle_id, nome, "execute", "fail", stderr)
+
+    esperar_tecla()
+    voltar para render_submenu(seção correspondente)
+
+função principal():
+    require_root()
+    ensure_base_dir()
+    ensure_log()
+    carregar mapa: seção → subitens (id, nome)
+    carregar mapa: controle_id → script
+    loop:
+        render_main_menu()
