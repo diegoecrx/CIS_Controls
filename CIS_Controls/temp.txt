@@ -62,3 +62,59 @@ if [[ $FAIL -eq 0 ]]; then
 else
   exit 1
 fi
+
+
+
+*****************************************************************************************************************************************************************
+
+#!/usr/bin/env bash
+# CIS 1.1.1.1 - Disable cramfs
+set -euo pipefail
+
+CONF="/etc/modprobe.d/cramfs.conf"
+LINE="install cramfs /bin/true"
+LINE2="blacklist cramfs"
+
+# 1) Require root
+if [[ $EUID -ne 0 ]]; then
+  echo "ERROR: Run as root." >&2
+  exit 1
+fi
+
+# 2) Ensure conf exists and backed up once
+if [[ ! -f "$CONF" ]]; then
+  install -m 0644 /dev/null "$CONF"
+fi
+[[ ! -f "${CONF}.bak" ]] && cp -p "$CONF" "${CONF}.bak"
+
+# 3) Enforce install rule (append if missing, or replace any existing 'install cramfs' line)
+if grep -qE '^\s*install\s+cramfs\b' "$CONF"; then
+  sed -ri 's|^\s*install\s+cramfs\b.*$|install cramfs /bin/true|g' "$CONF"
+else
+  echo "$LINE" >> "$CONF"
+fi
+
+# 4) Enforce blacklist rule (append if missing, or replace any existing 'blacklist cramfs' line)
+if grep -qE '^\s*blacklist\s+cramfs\b' "$CONF"; then
+  sed -ri 's|^\s*blacklist\s+cramfs\b.*$|blacklist cramfs|g' "$CONF"
+else
+  echo "$LINE2" >> "$CONF"
+fi
+
+# 5) Unload module if present
+if lsmod | grep -q '^cramfs'; then
+  modprobe -r cramfs 2>/dev/null || rmmod cramfs 2>/dev/null || true
+fi
+
+# 6) Verify
+FAIL=0
+modprobe -n -v cramfs 2>/dev/null | grep -q -- "/bin/true" || { echo "FAIL: modprobe install rule not effective"; FAIL=1; }
+modprobe -n -v cramfs 2>/dev/null | grep -q "blacklist cramfs" || { echo "FAIL: modprobe blacklist rule not effective"; FAIL=1; }
+lsmod | grep -q '^cramfs' && { echo "FAIL: cramfs module still loaded"; FAIL=1; }
+
+if [[ $FAIL -eq 0 ]]; then
+  echo "OK: cramfs disabled per CIS 1.1.1.1"
+  exit 0
+else
+  exit 1
+fi
