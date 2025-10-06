@@ -71,7 +71,13 @@ def setup_logging(verbosity: int, log_file: str | None) -> None:
 
 # ----------------------- Helpers -----------------------
 def _normalize_line(s: str) -> str:
+    # Mantido o comportamento original + remoção explícita do bullet U+F0B7 (“”)
     s = s.replace("\u2028", " ").replace("\u00AD", "")
+    # remove/normaliza o bullet “” (alguns PDFs usam esse codepoint via fontes Wingdings/Symbol)
+    s = s.replace("\uf0b7", " ")
+    # colapsa eventuais ocorrências repetidas do bullet + espaços
+    s = re.sub(r"[ \t]*\uf0b7[ \t]*", " ", s)
+    # normaliza espaços
     s = re.sub(r"\s+", " ", s)
     return s.strip()
 
@@ -417,8 +423,14 @@ def parse_args(argv: List[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description="Extract CIS sections from PDF and export to Excel with an Index (ToC) sheet."
     )
+
+    #####################################################################################################
+    #####################################################################################################
     p.add_argument("--pdf", required=False, default="CIS_Oracle_Linux_7_Benchmark_v3.1.1.pdf", help="Input PDF path.")
     p.add_argument("--out", required=False, default="CIS_Oracle_Linux_7_Benchmark_v3.1.1.xlsx", help="Output Excel path.")
+    #####################################################################################################
+    #####################################################################################################
+    
     p.add_argument("-v", "--verbose", action="count", default=0, help="Increase verbosity.")
     p.add_argument("--log-file", default=None, help="Optional log file path.")
     p.add_argument("--max-toc-pages", type=int, default=60, help="Max front pages to scan for ToC when PDF lacks embedded ToC.")
