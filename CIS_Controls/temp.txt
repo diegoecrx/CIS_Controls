@@ -1,120 +1,300 @@
-Nome Completo
-1.1.1.1 Ensure mounting of cramfs filesystems is disabled (Automated)
-
-
-Profile Applicability
-"Level 1 - Server
-Level 1 - Workstation"
-
-
-Remediation
-"Edit or create a file in the /etc/modprobe.d/ directory ending in .conf
-Example: vim /etc/modprobe.d/cramfs.conf
-and add the following line:
-install cramfs /bin/true
-Run the following command to unload the cramfs module:
-# rmmod cramfs"
+1	Initial Setup
+2	Services
+3	Network Configuration
+4	Logging and Auditing
+5	Access, Authentication and Authorization
+6	System Maintenance
 
 
 
-########################################################
-
-
-#!/usr/bin/env bash
-# CIS 1.1.1.1 - Disable cramfs
-set -euo pipefail
-
-CONF="/etc/modprobe.d/cramfs.conf"
-LINE="install cramfs /bin/true"
-
-# 1) Require root
-if [[ $EUID -ne 0 ]]; then
-  echo "ERROR: Run as root." >&2
-  exit 1
-fi
-
-# 2) Ensure conf exists and backed up once
-if [[ ! -f "$CONF" ]]; then
-  install -m 0644 /dev/null "$CONF"
-fi
-[[ ! -f "${CONF}.bak" ]] && cp -p "$CONF" "${CONF}.bak"
-
-# 3) Enforce rule (append if missing, or replace any existing 'install cramfs' line)
-if grep -qE '^\s*install\s+cramfs\b' "$CONF"; then
-  sed -ri 's|^\s*install\s+cramfs\b.*$|install cramfs /bin/true|' "$CONF"
-else
-  echo "$LINE" >> "$CONF"
-fi
-
-# 4) Unload module if present
-if lsmod | grep -q '^cramfs'; then
-  modprobe -r cramfs 2>/dev/null || rmmod cramfs 2>/dev/null || true
-fi
-
-# 5) Verify
-FAIL=0
-modprobe -n -v cramfs 2>/dev/null | grep -q -- "/bin/true" || { echo "FAIL: modprobe rule not effective"; FAIL=1; }
-lsmod | grep -q '^cramfs' && { echo "FAIL: cramfs module still loaded"; FAIL=1; }
-
-if [[ $FAIL -eq 0 ]]; then
-  echo "OK: cramfs disabled per CIS 1.1.1.1"
-  exit 0
-else
-  exit 1
-fi
 
 
 
-*****************************************************************************************************************************************************************
+##################
 
-#!/usr/bin/env bash
-# CIS 1.1.1.1 - Disable cramfs
-set -euo pipefail
 
-CONF="/etc/modprobe.d/cramfs.conf"
-LINE="install cramfs /bin/true"
-LINE2="blacklist cramfs"
+1.1	Filesystem Configuration
+1.2	Configure Software Updates
+1.3	Filesystem Integrity Checking
+1.4	Secure Boot Settings
+1.5	Additional Process Hardening
+1.6	Mandatory Access Control
+1.7	Command Line Warning Banners
+1.8	GNOME Display Manager
+2.1	inetd Services
+2.2	Special Purpose Services
+2.3	Service Clients
+2.4	Ensure nonessential services are removed or masked (Manual)
+3.1	Disable unused network protocols and devices
+3.2	Network Parameters (Host Only)
+3.3	Network Parameters (Host and Router)
+3.4	Uncommon Network Protocols
+3.5	Firewall Configuration
+4.1	Configure System Accounting (auditd)
+4.2	Configure Logging
+5.1	Configure time-based job schedulers
+5.2	Configure sudo
+5.3	Configure SSH Server
+5.4	Configure PAM
+5.5	User Accounts and Environment
+5.6	Ensure root login is restricted to system console (Manual)
+5.7	Ensure access to the su command is restricted (Automated)
+6.1	System File Permissions
+6.2	User and Group Settings
 
-# 1) Require root
-if [[ $EUID -ne 0 ]]; then
-  echo "ERROR: Run as root." >&2
-  exit 1
-fi
 
-# 2) Ensure conf exists and backed up once
-if [[ ! -f "$CONF" ]]; then
-  install -m 0644 /dev/null "$CONF"
-fi
-[[ ! -f "${CONF}.bak" ]] && cp -p "$CONF" "${CONF}.bak"
+###########################################################
 
-# 3) Enforce install rule (append if missing, or replace any existing 'install cramfs' line)
-if grep -qE '^\s*install\s+cramfs\b' "$CONF"; then
-  sed -ri 's|^\s*install\s+cramfs\b.*$|install cramfs /bin/true|g' "$CONF"
-else
-  echo "$LINE" >> "$CONF"
-fi
 
-# 4) Enforce blacklist rule (append if missing, or replace any existing 'blacklist cramfs' line)
-if grep -qE '^\s*blacklist\s+cramfs\b' "$CONF"; then
-  sed -ri 's|^\s*blacklist\s+cramfs\b.*$|blacklist cramfs|g' "$CONF"
-else
-  echo "$LINE2" >> "$CONF"
-fi
+1.1.1.1_cramfs
+1.1.1.2_squashfs
+1.1.1.3_udf_filesystems
+1.1.10_separate_partition_var
+1.1.11_separate_partition_var_tmp
+1.1.12_noexec
+1.1.13_nodev
+1.1.14_nosuid
+1.1.15_separate_partition_var_log
+1.1.16_separate_partition_var_log_audit
+1.1.17_separate_partition_home
+1.1.18_home_nodev
+1.1.19_noexec
+1.1.20_nodev_removable_media
+1.1.21_nosuid_removable_media
+1.1.22_sticky_bit
+1.1.23_automounting
+1.1.24_USB_storage
+1.1.2_tmp_configured
+1.1.3_noexec_tmp
+1.1.4_nodev_tmp
+1.1.5_nosuid_tmp
+1.1.6_dev_shm
+1.1.7_noexec_dev_shm
+1.1.8_nodev_dev_shm
+1.1.9_nosuid_dev_shm
+1.2.1_GPG_keys
+1.2.2_package_manager_repositories
+1.2.3_gpgcheck
+1.3.1_AIDE
+1.3.2_filesystem_integrity
+1.4.1_bootloader
+1.4.2_permissions_bootloader
+1.4.3_authentication_single_user_mode
+1.5.1_core_dumps
+1.5.2_XD_NX
+1.5.3_ASLR
+1.5.4_prelink
+1.6.1.1_SELinux
+1.6.1.2_SELinux_bootloader
+1.6.1.3_SELinux_policy
+1.6.1.4_SELinux_mode
+1.6.1.5_SELinux_mode_enforcing
+1.6.1.6_unconfined_services
+1.6.1.7_SETroubleshoot
+1.6.1.8_mcstrans
+1.7.1_message_day
+1.7.2_login_warning_banner
+1.7.3_remote_login_warning_banner
+1.7.4_permissions_etc_motd
+1.7.5_permissions_etc_issue
+1.7.6_etc_issue_net
+1.8.1_GNOME_Display_Manager
+1.8.2_GDM
+1.8.3_last_logged_user
+1.8.4_XDCMP
+1.9_updates_patches
+2.1.1_xinetd
+2.2.1.1_time_synchronization
+2.2.1.2_chrony
+2.2.1.3_ntp
+2.2.10_IMAP_POP3_server
+2.2.11_samba
+2.2.12_HTTP_proxy_server
+2.2.13_net-snmp
+2.2.14_NIS_server
+2.2.15_telnet-server
+2.2.16_mail_transfer_agent
+2.2.17_nfs-utils
+2.2.18_rpcbind
+2.2.19_rsync
+2.2.2_X11_server
+2.2.3_avahi_server
+2.2.4_CUPS
+2.2.5_DHCP_server
+2.2.6_LDAP_server
+2.2.7_DNS_server
+2.2.8_FTP_server
+2.2.9_HTTP_server
+2.3.1_NIS_client
+2.3.2_rsh_client
+2.3.3_talk_client
+2.3.4_telnet_client
+2.3.5_LDAP_client
+2.4_nonessential_services
+3.1.1_ipv6
+3.1.2_wireless
+3.2.1_ipforwarding
+3.2.2_packet_redirect
+3.3.1_src_routed
+3.3.2_icmp_redirects
+3.3.3_secure_icmp_redir
+3.3.4_suspiscious_packets
+3.3.5_broadcast_icmp
+3.3.6_bogus_icmp
+3.3.7_reverse_path_filtering
+3.3.8_tcp_syn_cookies
+3.3.9_ipv6_router_advertisements
+3.4.1_dccp
+3.4.2_sctp
+3.5.1.1_firewalld
+3.5.1.2_iptables_firewalld
+3.5.1.3_nftables_firewalld
+3.5.1.4_firewalld
+3.5.1.5_firewalld_default_zone
+3.5.1.6_network_interfaces_zone
+3.5.1.7_firewalld_drops
+3.5.2.10_nftables_enabled
+3.5.2.11_nftables_rules
+3.5.2.1_nftables_installed
+3.5.2.2_firewalld_nftables
+3.5.2.3_iptables_nftables
+3.5.2.4_iptables_flush_nftables
+3.5.2.5_ensure_nftables
+3.5.2.6_ensure_nftables_chains
+3.5.2.7_nftables_loopback
+3.5.2.8_nftables_outbound
+3.5.2.9_nftables_deny
+3.5.3.1.1_iptables_packages
+3.5.3.1.2_nftables_iptables
+3.5.3.1.3_firewalld_iptables
+3.5.3.2.1_iptables_lookback
+3.5.3.2.2_iptables_outbound
+3.5.3.2.3_iptables_rules_for_open_ports
+3.5.3.2.4_iptables_default_deny
+3.5.3.2.5_iptables_rules_saved
+3.5.3.2.6_iptables_enabled_running
+3.5.3.3.1_ip6tables_loopback
+3.5.3.3.2_ip6tables_outbound_established
+3.5.3.3.3_ip6tables_rules_for_open_ports
+3.5.3.3.4_ip6tables_default_deny
+3.5.3.3.5_ip6tables_rules_saved
+3.5.3.3.6_ip6tables_enabled_running
+4.1.1.1_auditd
+4.1.1.2_auditd_service
+4.1.1.3_audit_grub
+4.1.10_access
+4.1.11_priv_cmds
+4.1.12_mounts
+4.1.13_deletion
+4.1.14_scope
+4.1.15_actions
+4.1.16_modules
+4.1.17_audit_immutable
+4.1.2.1_audit_log_size
+4.1.2.2_audit_log_keep
+4.1.2.3_audit_log_full
+4.1.2.4_audit_backlog_limit
+4.1.3_time_change
+4.1.4_identity
+4.1.5_system_locale
+4.1.6_mac_policy
+4.1.7_logins
+4.1.8_session
+4.1.9_perm_mod
+4.2.1.1_rsyslog
+4.2.1.2_rsyslog_service
+4.2.1.3_rsyslog_file_perms
+4.2.1.4_rsyslog_logging
+4.2.1.5_rsyslog_remote
+4.2.1.6_rsyslog_remote_accept
+4.2.2.1_journald_forward
+4.2.2.2_journald_compress
+4.2.2.3_journald_persistent
+4.2.3_logfile_permissions
+4.2.4_logrotate
+5.1.1_crond
+5.1.2_crontab
+5.1.3_cron_hourly
+5.1.4_cron_daily
+5.1.5_cron_weekly
+5.1.6_cron_monthly
+5.1.7_cron_d
+5.1.8_cron_allow
+5.1.9_at_allow
+5.2.1_sudo
+5.2.2_sudo_pty
+5.2.3_sudo_logfile
+5.3.10_ssh_root_login
+5.3.11_ssh_empty_passwords
+5.3.12_ssh_user_env
+5.3.13_ssh_ciphers
+5.3.14_ssh_macs
+5.3.15_ssh_kex
+5.3.16_ssh_idle_timeout
+5.3.17_ssh_login_grace
+5.3.18_ssh_banner
+5.3.19_ssh_pam
+5.3.1_sshd_config_perms
+5.3.20_ssh_tcp_forwarding
+5.3.21_ssh_maxstartups
+5.3.22_ssh_maxsessions
+5.3.2_ssh_private_keys
+5.3.3_ssh_public_keys
+5.3.4_ssh_access
+5.3.5_ssh_loglevel
+5.3.6_ssh_x11
+5.3.7_ssh_maxauth
+5.3.8_ssh_ignore_rhosts
+5.3.9_ssh_hostbased
+5.4.1_pwquality
+5.4.2_pam_lockout
+5.4.3_password_hashing
+5.4.4_password_history
+5.5.1.1_password_expiration
+5.5.1.2_min_days_between_changes
+5.5.1.3_password_expiration_warning
+5.5.1.4_inactive_password_lock
+5.5.1.5_password_change_date
+5.5.2_system_accounts_secured
+5.5.3_root_default_group
+5.5.4_user_shell_timeout
+5.5.5_default_umask
+5.6_root_console_restriction
+5.7_restrict_su_command
+6.1.10_world_writable_files
+6.1.11_unowned_files
+6.1.12_ungrouped_files
+6.1.13_suid_executables
+6.1.14_sgid_executables
+6.1.1_audit_system_file_permissions
+6.1.2_passwd_permissions
+6.1.3_passwd_backup_permissions
+6.1.4_shadow_permissions
+6.1.5_shadow_backup_permissions
+6.1.6_gshadow_backup_permissions
+6.1.7_gshadow_permissions
+6.1.8_group_permissions
+6.1.9_group_backup_permissions
+6.2.10_root_path
+6.2.11_home_dirs_exist
+6.2.12_home_ownership
+6.2.13_home_permissions
+6.2.14_dot_files
+6.2.15_forward_files
+6.2.16_netrc_files
+6.2.17_rhosts_files
+6.2.1_shadowed_passwords
+6.2.2_shadow_passwords
+6.2.3_groups_exist
+6.2.4_shadow_group
+6.2.5_duplicate_usernames
+6.2.6_duplicate_groupnames
+6.2.7_duplicate_uids
+6.2.8_duplicate_gids
+6.2.9_uid0_users
 
-# 5) Unload module if present
-if lsmod | grep -q '^cramfs'; then
-  modprobe -r cramfs 2>/dev/null || rmmod cramfs 2>/dev/null || true
-fi
 
-# 6) Verify
-FAIL=0
-modprobe -n -v cramfs 2>/dev/null | grep -q -- "/bin/true" || { echo "FAIL: modprobe install rule not effective"; FAIL=1; }
-modprobe -n -v cramfs 2>/dev/null | grep -q "blacklist cramfs" || { echo "FAIL: modprobe blacklist rule not effective"; FAIL=1; }
-lsmod | grep -q '^cramfs' && { echo "FAIL: cramfs module still loaded"; FAIL=1; }
 
-if [[ $FAIL -eq 0 ]]; then
-  echo "OK: cramfs disabled per CIS 1.1.1.1"
-  exit 0
-else
-  exit 1
-fi
+
+
+
