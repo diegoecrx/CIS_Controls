@@ -1,0 +1,30 @@
+#!/bin/bash
+# ID: 1.1.8_dev_shm.sh 1.1.23 Disable Automounting (Automated)
+
+section=1_initial_setup
+sub_section=1.1_filesystem_configuration
+script_name=1.1.8_dev_shm.sh
+profile_app_server=1
+profile_app_workstation=2
+
+CONF_FILE=""
+LOG_FILE="cis_event.log"
+
+log_event() {
+  local result="$1"
+  local timestamp=$(date +"%d/%m/%Y %H:%M")
+  echo "$timestamp $CONF_FILE $sub_section $script_name $result" >> "$LOG_FILE"
+}
+
+# Remediation commands
+result="success"
+
+echo "Executing: systemctl --now mask autofs"
+systemctl --now mask autofs || result="pending"
+
+echo "Executing: yum remove autofs"
+yum remove autofs || result="pending"
+
+
+log_event "$result"
+exit 0
