@@ -1,0 +1,46 @@
+
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+
+Set-Service RemoteRegistry -StartupType Automatic
+Start-Service RemoteRegistry
+
+
+Set-NetFirewallRule -DisplayGroup "File and Printer Sharing" -Enabled True
+
+Set-Service LanmanServer -StartupType Automatic
+Start-Service LanmanServer
+
+
+Set-NetFirewallRule -DisplayGroup "Windows Management Instrumentation (WMI)" -Enabled True
+
+
+Set-Service winmgmt -StartupType Automatic
+Start-Service winmgmt
+
+
+
+winrm quickconfig -q
+Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True
+
+
+.\Administrator
+
+
+net user Administrator /active:yes
+
+
+Test-WSMan <target-ip>
+
+Enter-PSSession -ComputerName <target-ip> -Credential (Get-Credential)
+
+
+
+net use \\192.168.0.85\IPC$ /u:master PA$$
+
+net use \\192.168.0.85\IPC$ /u:Administrator PA$$
+
+net use \\192.168.0.85\Admin$ /u:Administrator PA$$
+
+net use \\192.168.0.85\C$ /u:Administrator PA$$
+
