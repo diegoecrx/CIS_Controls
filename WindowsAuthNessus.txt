@@ -1,4 +1,46 @@
 
+
+for script in 5*.sh; do
+    if [ -f "$script" ] && [ -x "$script" ]; then
+        echo "Running $script..."
+        ./"$script"
+    fi
+done
+
+
+
+RHEL CONF
+
+/var 
+20 GiB
+xfs
+
+
+
+/var/tmp
+1 GiB
+xfs
+
+
+/var/log
+4 GiB
+xfs
+
+
+/var/log/audit
+2 GiB
+xfs
+
+
+/tmp
+1 GiB
+xfs
+
+
+
+
+
+
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 
 
