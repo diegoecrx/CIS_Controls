@@ -69,7 +69,9 @@ try {
         exit 1
     }
     
+Write-Host "SUCCESS" -ForegroundColor Green
 } catch {
     Write-Host "Error applying CIS Control 17.2.3: $_" -ForegroundColor Red
+    Write-Host "FAIL" -ForegroundColor Red
     exit 1
 }
