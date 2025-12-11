@@ -87,8 +87,10 @@ try {
     Remove-Item "secedit.sdb" -Force -ErrorAction SilentlyContinue
     
     Write-Host "Successfully applied CIS Control 1.1.5" -ForegroundColor Green
+    Write-Host "SUCCESS" -ForegroundColor Green
     
 } catch {
     Write-Host "Error applying CIS Control 1.1.5: $_" -ForegroundColor Red
+    Write-Host "FAIL" -ForegroundColor Red
     exit 1
 }

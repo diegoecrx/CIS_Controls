@@ -47,11 +47,13 @@ try {
     $currentValue = Get-ItemProperty -Path $regPath -Name $valueName -ErrorAction SilentlyContinue
     if ($currentValue.$valueName -eq $value) {
         Write-Host "Successfully applied CIS Control 18.10.57.3.9.4" -ForegroundColor Green
+    Write-Host "SUCCESS" -ForegroundColor Green
     } else {
         Write-Host "Warning: Verification failed" -ForegroundColor Yellow
     }
     
 } catch {
     Write-Host "Error applying CIS Control 18.10.57.3.9.4: $_" -ForegroundColor Red
+    Write-Host "FAIL" -ForegroundColor Red
     exit 1
 }

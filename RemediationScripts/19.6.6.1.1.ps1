@@ -41,3 +41,11 @@ Users cannot participate in the Help Experi"
 Write-Host ""
 Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
 Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow
+
+Write-Host ""
+Write-Host "This control requires manual configuration." -ForegroundColor Yellow
+Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
+
+Write-Host ""
+Write-Host "This control requires manual configuration." -ForegroundColor Yellow
+Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow

@@ -43,3 +43,11 @@ The Windows 2000 Server, Windows 2000 Professional, Windows Server 2003, Windows
 Write-Host ""
 Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
 Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow
+
+Write-Host ""
+Write-Host "This control requires manual configuration." -ForegroundColor Yellow
+Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
+
+Write-Host ""
+Write-Host "This control requires manual configuration." -ForegroundColor Yellow
+Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
