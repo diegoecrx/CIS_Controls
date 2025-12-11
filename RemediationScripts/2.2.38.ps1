@@ -49,12 +49,12 @@ Write-Host "For production environments, use Group Policy for consistent applica
 # 4. Re-importing with secedit
 # This is complex and error-prone, so manual GP configuration is recommended
 
-Write-Host ""
-Write-Host "This control requires manual configuration." -ForegroundColor Yellow
-Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
 
-Write-Host ""
-Write-Host "This control requires manual configuration." -ForegroundColor Yellow
-Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
+
+
 
 Write-Host "SUCCESS" -ForegroundColor Green
+
+Write-Host ""
+Write-Host "This control requires manual configuration." -ForegroundColor Yellow
+Write-Host "Review the information above and apply the settings manually." -ForegroundColor Yellow
