@@ -1,0 +1,106 @@
+<#
+.SYNOPSIS
+    CIS Control 5.27 - 5.27 (L1) Ensure 'SSDP Discovery (SSDPSRV)' is set to 'Disabled'
+
+.DESCRIPTION
+    To establish the recommended configuration via GP, set the following UI path to: Disabled
+ 
+Computer Configuration\Policies\Windows Settings\Security Settings\System Services\SSDP Discovery
+ 
+Impact:
+ 
+SSDP-based devices will not be discovered.
+
+See Also
+
+https://workbench.cisecurity.org/benchmarks/...
+
+.NOTES
+    This script requires administrative privileges.
+    
+    CIS Control: 5.27
+    
+    This control requires manual configuration or complex automation beyond
+    simple registry/policy changes.
+    
+.EXAMPLE
+    PS> .\5.27.ps1
+#>
+
+#Requires -RunAsAdministrator
+
+Write-Host "CIS Control 5.27" -ForegroundColor Cyan
+Write-Host "="*80 -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Control: 5.27 (L1) Ensure 'SSDP Discovery (SSDPSRV)' is set to 'Disabled'" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "SOLUTION:" -ForegroundColor Cyan
+Write-Host "To establish the recommended configuration via GP, set the following UI path to: Disabled
+ 
+Computer Configuration\Policies\Windows Settings\Security Settings\System Services\SSDP Discovery
+ 
+Impact:
+ 
+SSDP-based devices will not be discovered.
+
+See Also
+
+https://workbench.cisecurity.org/benchmarks/21318
+
+References
+
+
+
+
+
+
+
+
+
+800-171
+3.4.2
+
+
+800-171
+3.4.6
+
+
+800-171
+3.4.7
+
+
+800-171R3
+03.04.02
+
+
+800-171R3
+03.04.06
+
+
+800-53
+CM-6
+
+
+800-53
+CM-7
+
+
+800-53R5
+CM-6
+
+
+800-53R5
+CM-7
+
+
+CSCV7
+9.2
+
+
+CSCV8
+4.8
+
+"
+Write-Host ""
+Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
+Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow
