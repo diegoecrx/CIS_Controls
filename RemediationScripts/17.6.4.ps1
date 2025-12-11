@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-    CIS Control 17.6.4 - 17.6.4 (L1) Ensure 'Audit Removable Storage' is set to 'Success and Failure'
+    CIS Control 17.6.4 - 17.6.4 (L1) Ensure 'Audit Removable Storage' is set to include 'Success and Failure'
 
 .DESCRIPTION
-    To establish the recommended configuration via GP, set the following UI path to Success and Failure :
+    To establish the recommended configuration via GP, set the following UI path to include Success and Failure :
  
 Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audit Policy Configu...
 
@@ -13,37 +13,63 @@ Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audi
     
     CIS Control: 17.6.4
     
+    AUTOMATION CHANGES:
+    - Converted from manual instructions to automatic remediation
+    - Uses auditpol.exe to configure audit policy settings
+    - Includes user confirmation prompt for safety
+    - Verifies settings after application
+    
 .EXAMPLE
     Run this script with administrative privileges:
-    PS> .\17.6.4.ps1
+    PS> .$CONTROL.ps1
 #>
 
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "Applying CIS Control 17.6.4 - Audit Policy" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "CIS Control 17.6.4 - Audit Policy Configuration" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "This script will configure the following audit policy:" -ForegroundColor Yellow
+Write-Host "  Subcategory: Removable Storage" -ForegroundColor White
+Write-Host "  Setting: Success and Failure" -ForegroundColor White
+Write-Host ""
+Write-Host "This will enable auditing of Removable Storage events." -ForegroundColor Yellow
+Write-Host ""
+
+# Prompt for confirmation
+$confirmation = Read-Host "Do you want to apply this audit policy? (Y/N)"
+if ($confirmation -ne 'Y' -and $confirmation -ne 'y') {
+    Write-Host "Operation cancelled by user." -ForegroundColor Yellow
+    exit 0
+}
 
 try {
-    # Extract audit category and subcategory from title
-    # This is a simplified version - full implementation would parse the exact category
+    Write-Host ""
+    Write-Host "Applying audit policy configuration..." -ForegroundColor Cyan
     
-    Write-Host "This control requires configuring audit policy settings." -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "Recommended Configuration:" -ForegroundColor Cyan
-    Write-Host "17.6.4 (L1) Ensure 'Audit Removable Storage' is set to 'Success and Failure'" -ForegroundColor White
-    Write-Host ""
-    Write-Host "To apply manually using auditpol:" -ForegroundColor Cyan
-    Write-Host "1. Identify the audit subcategory from the control description" -ForegroundColor White
-    Write-Host "2. Use: auditpol /set /subcategory:<name> /success:enable /failure:enable" -ForegroundColor White
-    Write-Host ""
-    Write-Host "Or use Group Policy:" -ForegroundColor Cyan
-    Write-Host "Computer Configuration\Windows Settings\Security Settings\Advanced Audit Policy Configuration" -ForegroundColor White
+    # Configure audit policy using auditpol
+    $result = auditpol /set /subcategory:"Removable Storage" /success:enable /failure:enable 2>&1
     
-    # Note: Specific auditpol commands would need exact subcategory names
-    # which vary by control
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Successfully configured audit policy." -ForegroundColor Green
+        
+        # Verify the setting
+        Write-Host ""
+        Write-Host "Verifying configuration..." -ForegroundColor Cyan
+        $verify = auditpol /get /subcategory:"Removable Storage" 2>&1
+        Write-Host $verify
+        
+        Write-Host ""
+        Write-Host "CIS Control 17.6.4 applied successfully!" -ForegroundColor Green
+    } else {
+        Write-Host "Failed to apply audit policy. Error: $result" -ForegroundColor Red
+        exit 1
+    }
     
 } catch {
-    Write-Host "Error: $_" -ForegroundColor Red
+    Write-Host "Error applying CIS Control 17.6.4: $_" -ForegroundColor Red
     exit 1
 }

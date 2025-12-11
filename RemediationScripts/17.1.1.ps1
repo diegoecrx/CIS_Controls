@@ -13,6 +13,12 @@ Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audi
     
     CIS Control: 17.1.1
     
+    AUTOMATION CHANGES:
+    - Converted from manual instructions to automatic remediation
+    - Uses auditpol.exe to configure audit policy settings
+    - Includes user confirmation prompt for safety
+    - Verifies settings after application
+    
 .EXAMPLE
     Run this script with administrative privileges:
     PS> .\17.1.1.ps1
@@ -22,28 +28,49 @@ Computer Configuration\Policies\Windows Settings\Security Settings\Advanced Audi
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "Applying CIS Control 17.1.1 - Audit Policy" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "CIS Control 17.1.1 - Audit Policy Configuration" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "This script will configure the following audit policy:" -ForegroundColor Yellow
+Write-Host "  Subcategory: Credential Validation" -ForegroundColor White
+Write-Host "  Setting: Success and Failure" -ForegroundColor White
+Write-Host ""
+Write-Host "This will enable auditing of credential validation events." -ForegroundColor Yellow
+Write-Host ""
+
+# Prompt for confirmation
+$confirmation = Read-Host "Do you want to apply this audit policy? (Y/N)"
+if ($confirmation -ne 'Y' -and $confirmation -ne 'y') {
+    Write-Host "Operation cancelled by user." -ForegroundColor Yellow
+    exit 0
+}
 
 try {
-    # Extract audit category and subcategory from title
-    # This is a simplified version - full implementation would parse the exact category
+    Write-Host ""
+    Write-Host "Applying audit policy configuration..." -ForegroundColor Cyan
     
-    Write-Host "This control requires configuring audit policy settings." -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "Recommended Configuration:" -ForegroundColor Cyan
-    Write-Host "17.1.1 (L1) Ensure 'Audit Credential Validation' is set to 'Success and Failure'" -ForegroundColor White
-    Write-Host ""
-    Write-Host "To apply manually using auditpol:" -ForegroundColor Cyan
-    Write-Host "1. Identify the audit subcategory from the control description" -ForegroundColor White
-    Write-Host "2. Use: auditpol /set /subcategory:<name> /success:enable /failure:enable" -ForegroundColor White
-    Write-Host ""
-    Write-Host "Or use Group Policy:" -ForegroundColor Cyan
-    Write-Host "Computer Configuration\Windows Settings\Security Settings\Advanced Audit Policy Configuration" -ForegroundColor White
+    # Configure audit policy using auditpol
+    # The subcategory name must match exactly as Windows expects it
+    $result = auditpol /set /subcategory:"Credential Validation" /success:enable /failure:enable 2>&1
     
-    # Note: Specific auditpol commands would need exact subcategory names
-    # which vary by control
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Successfully configured audit policy." -ForegroundColor Green
+        
+        # Verify the setting
+        Write-Host ""
+        Write-Host "Verifying configuration..." -ForegroundColor Cyan
+        $verify = auditpol /get /subcategory:"Credential Validation" 2>&1
+        Write-Host $verify
+        
+        Write-Host ""
+        Write-Host "CIS Control 17.1.1 applied successfully!" -ForegroundColor Green
+    } else {
+        Write-Host "Failed to apply audit policy. Error: $result" -ForegroundColor Red
+        exit 1
+    }
     
 } catch {
-    Write-Host "Error: $_" -ForegroundColor Red
+    Write-Host "Error applying CIS Control 17.1.1: $_" -ForegroundColor Red
     exit 1
 }
