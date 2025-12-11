@@ -29,9 +29,9 @@ Write-Host "Applying CIS Control 18.9.52..." -ForegroundColor Cyan
 
 try {
     $regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows"
-    $valueName = "Configure the behavior of the sudo command"
-    $value = "Enabled: Disabled"
-    $type = "String"
+    $valueName = "SudoBehavior"
+    $value = 0
+    $type = "DWord"
     
     # Ensure the registry path exists
     if (-not (Test-Path $regPath)) {

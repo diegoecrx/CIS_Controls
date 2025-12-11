@@ -92,8 +92,7 @@ CM-6
 800-53R5
 CM-7
 
-
-"
+..." -ForegroundColor White
 Write-Host ""
 Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
 Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow

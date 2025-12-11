@@ -39,7 +39,7 @@ See Also
 
 https://workbench.cisecurity.org/benchmarks/21318
 
-Refere"
+References..." -ForegroundColor White
 Write-Host ""
 Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
 Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow

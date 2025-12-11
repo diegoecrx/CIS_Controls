@@ -37,7 +37,9 @@ Computer Configuration\Policies\Windows Settings\Security Settings\System Servic
  
 Impact:
  
-WPAD will cease to function for automatic HTTP proxy routing, which may prevent Internet connectivity for workstations in organizations that currently use WPAD. Microsoft also cautions that some software that uses the network stack may have a functional dependency on this"
+WPAD will cease to function for automatic HTTP proxy routing, which may prevent Internet connectivity for workstations in organizations that currently use WPAD. Microsoft also cautions that some software that uses the network stack may have a functional dependency on this service.
+
+Please refer to the CIS Benchmark documentation for complete details." -ForegroundColor White
 Write-Host ""
 Write-Host "This control requires manual review and configuration." -ForegroundColor Yellow
 Write-Host "Please refer to the CIS Benchmark documentation for detailed steps." -ForegroundColor Yellow

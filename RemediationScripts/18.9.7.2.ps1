@@ -29,7 +29,7 @@ Write-Host "Applying CIS Control 18.9.7.2..." -ForegroundColor Cyan
 
 try {
     $regPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows"
-    $valueName = "Prevent device metadata retrieval from the Internet"
+    $valueName = "PreventDeviceMetadataFromNetwork"
     $value = 1
     $type = "DWord"
     
