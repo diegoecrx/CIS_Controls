@@ -1,0 +1,340 @@
+@ 
+NessusAudit
+2014
+#_
+
+
+# Check current network profile
+Get-NetConnectionProfile
+
+# Set all interfaces to Private
+Set-NetConnectionProfile -NetworkCategory Private
+
+# Or set specific interface by Name
+Get-NetConnectionProfile | ForEach-Object {
+    Set-NetConnectionProfile -Name $_.Name -NetworkCategory Private
+}
+
+
+
+
+
+
+
+
+# Run WinRM quickconfig (should work now)
+winrm quickconfig -q
+
+# Enable Basic authentication
+winrm set winrm/config/service/auth '@{Basic="true"}'
+
+# Enable unencrypted traffic
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+# Configure WinRM properly
+winrm set winrm/config/service '@{MaxTimeoutms="1800000"}'
+
+# Enable WinRM firewall rules
+Enable-NetFirewallRule -Name "WINRM-HTTP-In-TCP"
+Enable-NetFirewallRule -Name "WINRM-HTTP-In-TCP-PUBLIC" -ErrorAction SilentlyContinue
+
+
+
+
+
+
+
+
+
+# Complete Nessus Fix Script with Network Profile Fix
+Write-Host "=== Nessus Authentication Fix Script ===" -ForegroundColor Cyan
+
+# 1. Fix Network Profile
+Write-Host "`n1. Setting network profile to Private..." -ForegroundColor Yellow
+$profiles = Get-NetConnectionProfile
+foreach ($profile in $profiles) {
+    if ($profile.NetworkCategory -ne "Private" -and $profile.NetworkCategory -ne "DomainAuthenticated") {
+        Set-NetConnectionProfile -InterfaceAlias $profile.InterfaceAlias -NetworkCategory Private
+        Write-Host "Changed $($profile.Name) to Private" -ForegroundColor Green
+    }
+}
+
+# 2. Enable WinRM Service
+Write-Host "`n2. Configuring WinRM..." -ForegroundColor Yellow
+winrm quickconfig -quiet -force
+
+# 3. Configure WinRM Authentication
+Write-Host "`n3. Setting WinRM authentication..." -ForegroundColor Yellow
+winrm set winrm/config/service/auth '@{Basic="true"}'
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+# 4. Create HTTP Listener if missing
+Write-Host "`n4. Ensuring HTTP listener exists..." -ForegroundColor Yellow
+try {
+    $listener = winrm enumerate winrm/config/listener 2>$null
+    if ($listener -notmatch "Address = \*") {
+        winrm delete winrm/config/listener?Address=*+Transport=HTTP 2>$null
+        winrm create winrm/config/listener?Address=*+Transport=HTTP
+    }
+} catch {
+    Write-Host "Listener already exists or error: $_" -ForegroundColor Yellow
+}
+
+# 5. Enable PowerShell Remoting
+Write-Host "`n5. Enabling PowerShell Remoting..." -ForegroundColor Yellow
+Enable-PSRemoting -Force -SkipNetworkProfileCheck
+
+# 6. Set Trusted Hosts
+Write-Host "`n6. Setting Trusted Hosts..." -ForegroundColor Yellow
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+
+# 7. Enable Local Account Token Filter Policy
+Write-Host "`n7. Enabling Local Account Token Filter Policy..." -ForegroundColor Yellow
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+# 8. Enable all required services
+Write-Host "`n8. Starting required services..." -ForegroundColor Yellow
+Set-Service RemoteRegistry -StartupType Automatic -Status Running -Force
+Set-Service LanmanServer -StartupType Automatic -Status Running -Force
+Set-Service winmgmt -StartupType Automatic -Status Running -Force
+
+# 9. Enable firewall rules
+Write-Host "`n9. Enabling firewall rules..." -ForegroundColor Yellow
+$firewallRules = @(
+    "File and Printer Sharing",
+    "Windows Management Instrumentation (WMI)",
+    "Windows Remote Management"
+)
+
+foreach ($rule in $firewallRules) {
+    Enable-NetFirewallRule -DisplayGroup $rule 2>$null
+}
+
+# Enable specific WinRM rules
+Enable-NetFirewallRule -Name "WINRM-HTTP-In-TCP" 2>$null
+Enable-NetFirewallRule -DisplayName "Windows Remote Management (HTTP-In)" 2>$null
+
+# 10. Restart services
+Write-Host "`n10. Restarting services..." -ForegroundColor Yellow
+Restart-Service WinRM -Force
+Restart-Service RemoteRegistry -Force
+
+# 11. Verify configuration
+Write-Host "`n=== Verification ===" -ForegroundColor Green
+Write-Host "WinRM Service Status:" -ForegroundColor Cyan
+Get-Service WinRM | Format-List Status, StartType
+
+Write-Host "`nNetwork Profiles:" -ForegroundColor Cyan
+Get-NetConnectionProfile | Select-Object Name, NetworkCategory
+
+Write-Host "`nBasic Authentication Enabled:" -ForegroundColor Cyan
+winrm get winrm/config/service/auth
+
+Write-Host "`nTest WinRM locally:" -ForegroundColor Cyan
+Test-WSMan -ComputerName localhost
+
+Write-Host "`n=== Script Complete ===" -ForegroundColor Green
+Write-Host "Please reboot the system for all changes to take effect." -ForegroundColor Yellow
+Write-Host "After reboot, test Nessus authentication." -ForegroundColor Green
+
+
+
+
+
+
+
+
+# Test if WinRM is working
+Test-WSMan -ComputerName localhost
+
+# Test with credentials
+$cred = Get-Credential
+Test-WSMan -ComputerName localhost -Credential $cred -Authentication Basic
+
+
+
+
+
+
+#################################################################
+
+
+nessus recovery
+
+
+
+
+
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+Set-Service RemoteRegistry -StartupType Automatic
+Start-Service RemoteRegistry
+Set-NetFirewallRule -DisplayGroup "File and Printer Sharing" -Enabled True
+Set-Service LanmanServer -StartupType Automatic
+Start-Service LanmanServer
+Set-NetFirewallRule -DisplayGroup "Windows Management Instrumentation (WMI)" -Enabled True
+Set-Service winmgmt -StartupType Automatic
+Start-Service winmgmt
+winrm quickconfig -q
+Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True
+net user Administrator /active:yes
+net user master /active:yes
+ipconfig
+
+
+
+
+
+# Complete Nessus Fix Script
+Write-Host "Applying Nessus authentication fixes..." -ForegroundColor Yellow
+
+# 1. Enable Basic authentication
+winrm set winrm/config/service/auth '@{Basic="true"}'
+
+# 2. Enable unencrypted traffic
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+# 3. Create HTTP listener if missing
+$listener = winrm enumerate winrm/config/listener 2>$null
+if ($listener -notlike "*Address = *") {
+    winrm create winrm/config/listener?Address=*+Transport=HTTP
+}
+
+# 4. Configure WinRM service
+winrm set winrm/config/service '@{MaxTimeoutms="1800000"}'
+
+# 5. Enable PowerShell remoting
+Enable-PSRemoting -Force -SkipNetworkProfileCheck
+
+# 6. Set Trusted Hosts
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
+
+# 7. Add accounts to Remote Management Users
+net localgroup "Remote Management Users" Administrator /add
+net localgroup "Remote Management Users" master /add
+
+# 8. Enable all necessary firewall rules
+Enable-NetFirewallRule -DisplayGroup "Windows Remote Management"
+Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP" -Enabled True
+Set-NetFirewallRule -Name "WINRM-HTTP-In-TCP-PUBLIC" -Enabled True
+
+# 9. Restart services
+Restart-Service WinRM
+Restart-Service RemoteRegistry
+
+# 10. Verify configuration
+Write-Host "`nVerifying configuration..." -ForegroundColor Green
+winrm get winrm/config/service/auth
+Test-WSMan
+
+Write-Host "`nFixes applied. Please test Nessus authentication again." -ForegroundColor Green
+
+
+
+
+# Enable Basic authentication in WinRM
+winrm set winrm/config/service/auth '@{Basic="true"}'
+
+# Also enable unencrypted traffic (Nessus might need this too)
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+# Restart WinRM service
+Restart-Service WinRM
+
+# Test if authentication works now
+Test-WSMan -ComputerName localhost -Credential (Get-Credential)
+
+
+
+
+
+
+# Save as "Fix-Nessus-Authentication.ps1"
+Write-Host "Reverting security settings for Nessus compatibility..." -ForegroundColor Yellow
+
+# 1. Fix User Rights Assignment
+$fixInf = @"
+[Unicode]
+Unicode=yes
+[Version]
+signature="`$CHICAGO`$"
+revision=1
+[Privilege Rights]
+SeNetworkLogonRight = *S-1-5-32-544,*S-1-5-32-555,*S-1-5-11
+SeDenyNetworkLogonRight = *S-1-5-32-546
+SeDenyRemoteInteractiveLogonRight = *S-1-5-32-546
+"@
+$tempFile = "$env:TEMP\nessus_fix.inf"
+$fixInf | Out-File $tempFile -Encoding Unicode
+secedit /configure /db "$env:TEMP\nessus.sdb" /cfg $tempFile /quiet
+
+# 2. Revert critical security options
+Write-Host "Reverting security options..." -ForegroundColor Cyan
+
+# Enable network access for Nessus
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "RestrictAnonymous" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "RestrictAnonymousSAM" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "DisableDomainCreds" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "EveryoneIncludesAnonymous" -Value 1 -Force
+
+# Loosen NTLM restrictions for Nessus
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa" -Name "LmCompatibilityLevel" -Value 3 -Force  # NTLMv2 with fallback
+
+# Fix network security
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" -Name "NTLMMinClientSec" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Lsa\MSV1_0" -Name "NTLMMinServerSec" -Value 0 -Force
+
+# Re-enable SMB signing fallback
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" -Name "RequireSecuritySignature" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters" -Name "EnableSecuritySignature" -Value 1 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" -Name "RequireSecuritySignature" -Value 0 -Force
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" -Name "EnableSecuritySignature" -Value 1 -Force
+
+# Reset auto-disconnect
+Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanManServer\Parameters" -Name "AutoDisconnect" -Value 30 -Force
+
+# 3. Add accounts to Remote Management Users
+net localgroup "Remote Management Users" /add Administrator 2>$null
+net localgroup "Remote Management Users" /add master 2>$null
+
+Write-Host "Restarting services..." -ForegroundColor Cyan
+Restart-Service LanmanServer -Force
+Restart-Service LanmanWorkstation -Force
+
+Write-Host "Nessus authentication fixes applied. Please reboot." -ForegroundColor Green
+
+
+
+# Check current network profile
+Get-NetConnectionProfile
+
+# Set all interfaces to Private
+Set-NetConnectionProfile -NetworkCategory Private
+
+# Or set specific interface by Name
+Get-NetConnectionProfile | ForEach-Object {
+    Set-NetConnectionProfile -Name $_.Name -NetworkCategory Private
+}
+
+
+
+
+
+
+
+# Run WinRM quickconfig (should work now)
+winrm quickconfig -q
+
+# Enable Basic authentication
+winrm set winrm/config/service/auth '@{Basic="true"}'
+
+# Enable unencrypted traffic
+winrm set winrm/config/service '@{AllowUnencrypted="true"}'
+
+# Configure WinRM properly
+winrm set winrm/config/service '@{MaxTimeoutms="1800000"}'
+
+# Enable WinRM firewall rules
+Enable-NetFirewallRule -Name "WINRM-HTTP-In-TCP"
+Enable-NetFirewallRule -Name "WINRM-HTTP-In-TCP-PUBLIC" -ErrorAction SilentlyContinue
+
+
