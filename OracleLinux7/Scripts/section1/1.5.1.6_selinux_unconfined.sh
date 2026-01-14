@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.5.1.6 Ensure no unconfined services exist
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

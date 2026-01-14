@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.2.2 Ensure gpgcheck is globally activated
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

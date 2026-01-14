@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.6.6 Ensure access to /etc/issue.net is configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

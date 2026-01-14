@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.1.1 Ensure cramfs kernel module is not available
 # This script disables the cramfs kernel module
 # Compatible with OCI (Oracle Cloud Infrastructure)

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.2.3 Ensure repo_gpgcheck is globally activated
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # NOTE: Not all repositories support repo_gpgcheck

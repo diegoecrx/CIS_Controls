@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.2.4 Ensure noexec option set on /dev/shm partition
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

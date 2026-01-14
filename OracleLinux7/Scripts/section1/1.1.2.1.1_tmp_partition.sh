@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.1.1 Ensure /tmp is a separate partition
 # This script configures /tmp as a separate tmpfs partition
 # Compatible with OCI (Oracle Cloud Infrastructure)

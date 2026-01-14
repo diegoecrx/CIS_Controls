@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.5.1 Ensure separate partition exists for /var/tmp
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

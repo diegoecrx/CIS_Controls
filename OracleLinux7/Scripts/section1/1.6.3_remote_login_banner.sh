@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.6.3 Ensure remote login warning banner is configured properly
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

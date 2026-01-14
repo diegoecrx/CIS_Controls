@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.1.7 Ensure udf kernel module is not available
 # This script disables the udf kernel module
 # Compatible with OCI (Oracle Cloud Infrastructure)

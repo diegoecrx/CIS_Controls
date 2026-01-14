@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.2.1 Ensure GPG keys are configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # NOTE: Manual review required

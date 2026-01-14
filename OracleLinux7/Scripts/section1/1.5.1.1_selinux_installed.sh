@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.5.1.1 Ensure SELinux is installed
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

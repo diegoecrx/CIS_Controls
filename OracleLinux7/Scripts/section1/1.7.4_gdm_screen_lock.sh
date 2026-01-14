@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.7.4 Ensure GDM screen locks when the user is idle
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

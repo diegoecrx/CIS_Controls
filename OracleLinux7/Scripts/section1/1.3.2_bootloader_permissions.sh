@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.3.2 Ensure permissions on bootloader config are configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

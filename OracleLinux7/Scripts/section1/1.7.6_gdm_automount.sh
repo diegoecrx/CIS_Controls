@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.7.6 Ensure GDM automatic mounting of removable media is disabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.4.3 Ensure nosuid option set on /var partition
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.1.3 Ensure hfs kernel module is not available
 # This script disables the hfs kernel module
 # Compatible with OCI (Oracle Cloud Infrastructure)

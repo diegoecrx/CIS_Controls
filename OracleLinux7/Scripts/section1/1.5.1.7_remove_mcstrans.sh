@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.5.1.7 Ensure the MCS Translation Service (mcstrans) is not installed
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

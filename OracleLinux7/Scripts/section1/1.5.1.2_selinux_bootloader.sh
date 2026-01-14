@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.5.1.2 Ensure SELinux is not disabled in bootloader configuration
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

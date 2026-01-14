@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.5.2 Ensure nodev option set on /var/tmp partition
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

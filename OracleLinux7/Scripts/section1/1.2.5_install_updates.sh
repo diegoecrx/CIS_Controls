@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.2.5 Ensure updates, patches, and additional security software are installed
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

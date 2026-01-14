@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.2.4 Ensure package manager repositories are configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # NOTE: Manual review required

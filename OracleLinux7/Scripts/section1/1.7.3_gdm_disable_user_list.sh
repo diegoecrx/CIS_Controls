@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.7.3 Ensure GDM disable-user-list option is enabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

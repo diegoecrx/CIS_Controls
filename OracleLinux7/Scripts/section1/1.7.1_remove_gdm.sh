@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.7.1 Ensure GNOME Display Manager is removed
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # WARNING: This will remove the GUI - DO NOT APPLY on systems requiring GUI

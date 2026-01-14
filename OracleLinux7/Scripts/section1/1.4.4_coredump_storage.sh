@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.4.4 Ensure core dump storage is disabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

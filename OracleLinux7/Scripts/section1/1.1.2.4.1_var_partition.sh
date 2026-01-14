@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.4.1 Ensure separate partition exists for /var
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # NOTE: This is a manual review item - requires partition creation during install

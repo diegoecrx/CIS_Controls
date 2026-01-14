@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.6.4 Ensure access to /etc/motd is configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

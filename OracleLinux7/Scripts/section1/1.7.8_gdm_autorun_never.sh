@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.7.8 Ensure GDM autorun-never is enabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.3.1 Ensure bootloader password is set
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # WARNING: This may affect remote access/console recovery - DO NOT APPLY AUTOMATICALLY

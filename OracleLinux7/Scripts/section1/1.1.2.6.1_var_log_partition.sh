@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.1.2.6.1 Ensure separate partition exists for /var/log
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # CIS Oracle Linux 7 - 1.6.1 Ensure message of the day is configured properly
 # Compatible with OCI (Oracle Cloud Infrastructure)
 
