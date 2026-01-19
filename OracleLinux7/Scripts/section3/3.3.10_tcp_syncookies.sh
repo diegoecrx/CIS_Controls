@@ -1,20 +1,27 @@
 #!/bin/bash
 # CIS Oracle Linux 7 Benchmark - 3.3.10
-# Ensure tcp syn cookies is enabled
-# This script enables TCP SYN cookies
+# Ensure TCP SYN Cookies is enabled
 
 set -e
 
-echo "CIS 3.3.10 - Enabling TCP SYN cookies..."
+echo "CIS 3.3.10 - Enabling TCP SYN Cookies..."
 
 SYSCTL_CONF="/etc/sysctl.d/60-netipv4_sysctl.conf"
+PARAM="net.ipv4.tcp_syncookies"
+VALUE="1"
 
-# Set TCP SYN cookies to enabled
-grep -qE "^\s*net\.ipv4\.tcp_syncookies\s*=" /etc/sysctl.conf /etc/sysctl.d/*.conf 2>/dev/null || \
-    echo "net.ipv4.tcp_syncookies = 1" >> "$SYSCTL_CONF"
+mkdir -p /etc/sysctl.d
 
-# Apply the setting
-sysctl -w net.ipv4.tcp_syncookies=1
+for f in /etc/sysctl.conf /etc/sysctl.d/*.conf /usr/lib/sysctl.d/*.conf; do
+    if [ -f "$f" ]; then
+        sed -i "/^[[:space:]]*${PARAM}[[:space:]]*=/d" "$f" 2>/dev/null || true
+    fi
+done
+
+echo "$PARAM = $VALUE" >> "$SYSCTL_CONF"
+echo " - Added $PARAM = $VALUE to $SYSCTL_CONF"
+
+sysctl -w ${PARAM}=${VALUE}
 sysctl -w net.ipv4.route.flush=1
 
-echo "CIS 3.3.10 remediation complete - TCP SYN cookies enabled."
+echo "CIS 3.3.10 remediation complete."
