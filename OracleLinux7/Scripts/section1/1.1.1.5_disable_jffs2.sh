@@ -14,7 +14,9 @@ l_mpname="$(tr '-' '_' <<< "$l_mname")"
 l_mndir="$(tr '-' '/' <<< "$l_mname")"
 
 module_loadable_fix() {
-    if ! modprobe --showconfig | grep -Pq -- "^\h*install\h+$l_mpname\b"; then
+    l_loadable="$(modprobe -n -v "$l_mname" 2>/dev/null)"
+    [ "$(wc -l <<< "$l_loadable")" -gt "1" ] && l_loadable="$(grep -P -- "(^\h*install|\b$l_mname)\b" <<< "$l_loadable")"
+    if ! grep -Pq -- '^\h*install \/bin\/(true|false)' <<< "$l_loadable"; then
         echo " - setting module \"$l_mname\" to not be loadable"
         echo "install $l_mname /bin/false" >> /etc/modprobe.d/"$l_mpname".conf
     fi
