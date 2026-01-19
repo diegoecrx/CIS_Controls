@@ -7,41 +7,36 @@ set -e
 
 echo "CIS 4.5.3.3 - Configuring default user umask..."
 
-# Configure umask in /etc/profile.d
-cat > /etc/profile.d/umask.sh << 'EOF'
+# Configure umask in /etc/profile.d with proper naming for early loading
+cat > /etc/profile.d/50-systemwide_umask.sh << 'EOF'
 # CIS 4.5.3.3 - Default user umask
 umask 027
 EOF
 
-chmod 644 /etc/profile.d/umask.sh
+chmod 644 /etc/profile.d/50-systemwide_umask.sh
+echo " - Created /etc/profile.d/50-systemwide_umask.sh with umask 027"
 
-# Update /etc/bashrc
-if grep -q "^\s*umask" /etc/bashrc; then
-    sed -i 's/^\s*umask\s\+[0-9]\+/umask 027/' /etc/bashrc
-else
-    echo "" >> /etc/bashrc
-    echo "# CIS 4.5.3.3 - Default user umask" >> /etc/bashrc
-    echo "umask 027" >> /etc/bashrc
+# Comment out or update umask in /etc/bashrc
+if grep -q "^\s*umask" /etc/bashrc 2>/dev/null; then
+    sed -i 's/^\([[:space:]]*umask[[:space:]]\+[0-9]\+\)/#\1  # Commented by CIS 4.5.3.3 - umask set in \/etc\/profile.d\//' /etc/bashrc
+    echo " - Commented out umask lines in /etc/bashrc"
 fi
 
-# Update /etc/profile
-if grep -q "^\s*umask" /etc/profile; then
-    sed -i 's/^\s*umask\s\+[0-9]\+/umask 027/' /etc/profile
-else
-    echo "" >> /etc/profile
-    echo "# CIS 4.5.3.3 - Default user umask" >> /etc/profile
-    echo "umask 027" >> /etc/profile
+# Comment out or update umask in /etc/profile
+if grep -q "^\s*umask" /etc/profile 2>/dev/null; then
+    sed -i 's/^\([[:space:]]*umask[[:space:]]\+[0-9]\+\)/#\1  # Commented by CIS 4.5.3.3 - umask set in \/etc\/profile.d\//' /etc/profile
+    echo " - Commented out umask lines in /etc/profile"
 fi
 
 # Update /etc/login.defs
-if grep -q "^UMASK" /etc/login.defs; then
+if grep -q "^UMASK" /etc/login.defs 2>/dev/null; then
     sed -i 's/^UMASK.*/UMASK 027/' /etc/login.defs
+    echo " - Updated UMASK to 027 in /etc/login.defs"
 else
     echo "UMASK 027" >> /etc/login.defs
+    echo " - Added UMASK 027 to /etc/login.defs"
 fi
-
-echo "Verifying umask configuration:"
-grep -E "umask|UMASK" /etc/profile /etc/bashrc /etc/login.defs 2>/dev/null | head -10
 
 echo ""
 echo "CIS 4.5.3.3 remediation complete."
+echo "Note: Users may need to log out and back in for changes to take effect."
