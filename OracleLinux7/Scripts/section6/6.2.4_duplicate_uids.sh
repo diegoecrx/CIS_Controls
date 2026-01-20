@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.2.4
 # Ensure no duplicate UIDs exist
 # NOTE: Audit only - manual remediation required

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.2.9
 # Ensure root is the only UID 0 account
 # NOTE: This script identifies - DOES NOT automatically remove accounts

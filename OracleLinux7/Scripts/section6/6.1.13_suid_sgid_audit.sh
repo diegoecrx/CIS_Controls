@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.1.13
 # Ensure SUID and SGID files are reviewed
 # NOTE: This script identifies files - manual review required

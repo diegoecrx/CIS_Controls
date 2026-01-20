@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.1.12
 # Ensure no unowned or ungrouped files or directories exist
 # NOTE: This script identifies files - manual review required

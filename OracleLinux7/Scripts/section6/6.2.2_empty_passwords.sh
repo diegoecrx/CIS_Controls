@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.2.2
 # Ensure /etc/shadow password fields are not empty
 # NOTE: This script identifies and locks accounts - review carefully

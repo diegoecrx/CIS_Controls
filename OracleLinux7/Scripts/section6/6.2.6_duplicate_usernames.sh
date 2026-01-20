@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.2.6
 # Ensure no duplicate user names exist
 # NOTE: Audit only - manual remediation required

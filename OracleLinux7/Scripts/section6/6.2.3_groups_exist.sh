@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 6.2.3
 # Ensure all groups in /etc/passwd exist in /etc/group
 # NOTE: Audit only - manual remediation required
