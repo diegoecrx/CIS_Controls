@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.3.6
 # Ensure sudo authentication timeout is configured correctly
 # This script configures sudo timeout

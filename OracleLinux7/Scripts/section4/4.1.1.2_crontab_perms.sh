@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.1.1.2
 # Ensure permissions on /etc/crontab are configured
 # This script sets proper ownership and permissions

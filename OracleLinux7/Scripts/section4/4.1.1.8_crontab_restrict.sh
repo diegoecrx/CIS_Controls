@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.1.1.8
 # Ensure crontab is restricted to authorized users
 # This script configures cron.allow and cron.deny

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.2.7
 # Ensure password dictionary check is enabled
 # This script enables dictcheck in pwquality.conf

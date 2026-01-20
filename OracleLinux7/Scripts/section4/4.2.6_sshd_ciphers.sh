@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.6
 # Ensure sshd Ciphers are configured
 # This script configures strong SSH ciphers

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.7
 # Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
 # This script configures SSH client alive settings

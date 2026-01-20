@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.9
 # Ensure sshd GSSAPIAuthentication is disabled
 # This script disables GSSAPI authentication

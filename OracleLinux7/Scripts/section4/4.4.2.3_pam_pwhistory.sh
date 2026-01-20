@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.3.1 through 4.4.2.3.4
 # Ensure pam_pwhistory module is enabled with proper settings
 # This script configures pam_pwhistory

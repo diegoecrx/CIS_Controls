@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.11
 # Ensure sshd IgnoreRhosts is enabled
 # This script enables IgnoreRhosts

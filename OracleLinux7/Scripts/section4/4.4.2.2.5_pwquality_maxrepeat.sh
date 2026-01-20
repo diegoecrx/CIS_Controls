@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.2.5
 # Ensure password same consecutive characters is configured
 # This script configures maxrepeat in pwquality.conf

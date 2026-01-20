@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.5.3.2
 # Ensure default user shell timeout is configured
 # This script configures TMOUT in /etc/profile.d/ only (not /etc/bashrc to avoid readonly conflicts)

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.2.1
 # Ensure pam_pwquality module is enabled
 # WARNING: PAM configuration - PRINT ONLY

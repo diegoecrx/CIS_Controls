@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.2.6
 # Ensure password maximum sequential characters is configured
 # This script configures maxsequence in pwquality.conf

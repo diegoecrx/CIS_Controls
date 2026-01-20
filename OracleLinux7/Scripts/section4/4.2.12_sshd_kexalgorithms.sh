@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.12
 # Ensure sshd KexAlgorithms is configured
 # This script configures strong key exchange algorithms

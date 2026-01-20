@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.4.2.4.1 through 4.4.2.4.4
 # Ensure pam_unix is properly configured
 # Removes nullok, removes remember, adds sha512 and use_authtok

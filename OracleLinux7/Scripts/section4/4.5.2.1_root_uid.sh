@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.5.2.1
 # Ensure root is the only UID 0 account
 # This script provides audit check - PRINT ONLY (affects root)

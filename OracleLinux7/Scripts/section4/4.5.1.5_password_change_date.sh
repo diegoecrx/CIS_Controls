@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.5.1.5
 # Ensure all users last password change date is in the past
 # This script provides audit check - PRINT ONLY

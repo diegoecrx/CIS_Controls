@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.2.2
 # Ensure permissions on SSH private host key files are configured
 # This script sets proper permissions on private SSH keys

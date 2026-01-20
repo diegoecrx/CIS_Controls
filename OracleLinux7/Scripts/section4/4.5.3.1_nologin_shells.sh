@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.5.3.1
 # Ensure nologin is not listed in /etc/shells
 # This script removes nologin from /etc/shells

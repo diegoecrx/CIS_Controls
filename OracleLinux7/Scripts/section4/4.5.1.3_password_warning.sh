@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.5.1.3
 # Ensure password expiration warning days is 7 or more
 # This script configures PASS_WARN_AGE

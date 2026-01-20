@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.3.4
 # Ensure users must provide password for escalation
 # This script checks for NOPASSWD entries - MANUAL REVIEW

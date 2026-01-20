@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 4.3.5
 # Ensure re-authentication for privilege escalation is not disabled globally
 # This script checks for !authenticate entries - MANUAL REVIEW
