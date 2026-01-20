@@ -1,26 +1,37 @@
 #!/bin/bash
 # CIS Oracle Linux 7 Benchmark - 4.2.4
 # Ensure sshd access is configured
-# This script displays current SSH access configuration - MANUAL REVIEW
+# This script configures SSH access control
 
 set -e
 
-echo "CIS 4.2.4 - Checking sshd access configuration..."
-echo "=============================================="
-echo "MANUAL REVIEW REQUIRED"
-echo "=============================================="
-echo ""
+echo "CIS 4.2.4 - Configuring sshd access..."
 
-echo "Current SSH access settings:"
-grep -Ei '^\s*(Allow|Deny)(Users|Groups)' /etc/ssh/sshd_config /etc/ssh/sshd_config.d/*.conf 2>/dev/null || echo "No Allow/Deny directives found"
+# Backup sshd_config
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup.$(date +%Y%m%d%H%M%S)
+
+# For OCI, allow opc user and root (if needed for recovery)
+# Adjust this list based on your environment
+ALLOWED_USERS="opc root"
+
+# Check if AllowUsers is already set
+if grep -Eq '^\s*AllowUsers\s+' /etc/ssh/sshd_config; then
+    echo "AllowUsers is already configured:"
+    grep -i "^AllowUsers" /etc/ssh/sshd_config
+else
+    # Add AllowUsers directive
+    echo "AllowUsers $ALLOWED_USERS" >> /etc/ssh/sshd_config
+    echo " - Added AllowUsers: $ALLOWED_USERS"
+fi
 
 echo ""
-echo "To restrict SSH access, edit /etc/ssh/sshd_config and add one of:"
-echo "  AllowUsers <userlist>"
-echo "  AllowGroups <grouplist>"
-echo "  DenyUsers <userlist>"
-echo "  DenyGroups <grouplist>"
-echo ""
-echo "Then run: systemctl reload-or-try-restart sshd.service"
+echo "Verifying configuration:"
+grep -Ei "^(Allow|Deny)(Users|Groups)" /etc/ssh/sshd_config || echo "No access directives found"
 
-echo "CIS 4.2.4 remediation complete - manual review required."
+echo ""
+echo "Reloading sshd..."
+systemctl reload-or-try-restart sshd.service
+
+echo ""
+echo "CIS 4.2.4 remediation complete."
+echo "NOTE: Ensure your user is in the AllowUsers list before disconnecting!"

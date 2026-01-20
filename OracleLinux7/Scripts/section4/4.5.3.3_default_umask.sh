@@ -16,16 +16,19 @@ EOF
 chmod 644 /etc/profile.d/50-systemwide_umask.sh
 echo " - Created /etc/profile.d/50-systemwide_umask.sh with umask 027"
 
-# Comment out or update umask in /etc/bashrc
-if grep -q "^\s*umask" /etc/bashrc 2>/dev/null; then
-    sed -i 's/^\([[:space:]]*umask[[:space:]]\+[0-9]\+\)/#\1  # Commented by CIS 4.5.3.3 - umask set in \/etc\/profile.d\//' /etc/bashrc
-    echo " - Commented out umask lines in /etc/bashrc"
+# Fix /etc/profile - comment out the entire umask block (if/else with umask 002/022)
+# This handles the conditional umask that is standard in RHEL/OL
+if grep -q "umask 00[02]" /etc/profile 2>/dev/null; then
+    echo " - Commenting out umask block in /etc/profile..."
+    # Comment out lines containing umask 002 or 022 (indented)
+    sed -i 's/^\([[:space:]]*umask[[:space:]]\+00[0-9]\)$/# CIS 4.5.3.3: \1/' /etc/profile
 fi
 
-# Comment out or update umask in /etc/profile
-if grep -q "^\s*umask" /etc/profile 2>/dev/null; then
-    sed -i 's/^\([[:space:]]*umask[[:space:]]\+[0-9]\+\)/#\1  # Commented by CIS 4.5.3.3 - umask set in \/etc\/profile.d\//' /etc/profile
-    echo " - Commented out umask lines in /etc/profile"
+# Fix /etc/bashrc - comment out the umask lines
+if grep -q "umask 00[02]" /etc/bashrc 2>/dev/null; then
+    echo " - Commenting out umask lines in /etc/bashrc..."
+    # Comment out lines containing umask 002 or 022 (indented)
+    sed -i 's/^\([[:space:]]*umask[[:space:]]\+00[0-9]\)$/# CIS 4.5.3.3: \1/' /etc/bashrc
 fi
 
 # Update /etc/login.defs
