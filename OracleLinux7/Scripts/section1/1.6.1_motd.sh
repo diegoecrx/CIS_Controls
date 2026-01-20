@@ -8,13 +8,19 @@ echo "=== CIS 1.6.1 - Configure message of the day ==="
 
 MOTD_FILE="/etc/motd"
 
-# Remove or configure /etc/motd
-if [ -f "$MOTD_FILE" ]; then
-    # Remove OS info references
-    sed -i 's/\\m//g; s/\\r//g; s/\\s//g; s/\\v//g' "$MOTD_FILE"
-    echo " - Cleaned /etc/motd of OS references"
-else
-    echo " - /etc/motd does not exist (OK)"
+# Create proper MOTD without OS version info
+cat > "$MOTD_FILE" << 'EOF'
+Authorized uses only. All activity may be monitored and reported.
+EOF
+
+# Verify no OS-specific escape sequences
+if grep -qE '\\[mrsv]' "$MOTD_FILE" 2>/dev/null; then
+    sed -i 's/\\[mrsv]//g' "$MOTD_FILE"
 fi
 
-echo " - MOTD configuration complete"
+echo " - Configured /etc/motd with warning banner"
+echo " - MOTD contents:"
+cat "$MOTD_FILE"
+
+echo ""
+echo "CIS 1.6.1 remediation complete."
