@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.3.7
 # Ensure nftables default deny firewall policy
 # This script sets default drop policies with user confirmation

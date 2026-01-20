@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.1.2
 # Ensure a single firewall configuration utility is in use
 # This script detects enabled firewalls and prompts to disable extras

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.2.1
 # Ensure dccp kernel module is not available
 # This script disables the dccp kernel module

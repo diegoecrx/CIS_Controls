@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.4.3.6
 # Ensure ip6tables is enabled and running
 # This script enables and starts the ip6tables service

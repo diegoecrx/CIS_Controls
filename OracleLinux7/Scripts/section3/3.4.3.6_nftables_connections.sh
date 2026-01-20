@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.3.6
 # Ensure nftables outbound and established connections are configured
 # This script configures outbound and established connection rules

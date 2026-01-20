@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.4.2.3
 # Ensure iptables rules exist for all open ports
 # This script checks for open ports and firewall rules

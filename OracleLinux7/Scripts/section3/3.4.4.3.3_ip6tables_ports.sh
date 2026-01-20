@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.4.3.3
 # Ensure ip6tables firewall rules exist for all open ports
 # This script checks for open ports and IPv6 firewall rules

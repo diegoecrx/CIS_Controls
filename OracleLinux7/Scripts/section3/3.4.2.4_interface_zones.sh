@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.2.4
 # Ensure network interfaces are assigned to appropriate zone
 # This script checks network interface zone assignments

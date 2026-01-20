@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 3.4.4.2.2
 # Ensure iptables outbound and established connections are configured
 # This script configures iptables connection tracking
