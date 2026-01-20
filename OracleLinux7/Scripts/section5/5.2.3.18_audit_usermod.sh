@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.2.3.18
 # Ensure successful and unsuccessful attempts to use the usermod command are recorded
 

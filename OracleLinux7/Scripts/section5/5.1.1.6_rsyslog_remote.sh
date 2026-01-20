@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.1.1.6
 # Ensure rsyslog is configured to send logs to a remote log host
 # This script provides PRINT ONLY (environment specific)

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.1.2.5
 # Ensure journald is not configured to send logs to rsyslog
 # NOTE: This conflicts with 5.1.1.3 - choose based on your logging architecture

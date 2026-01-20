@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.1.2.6
 # Ensure journald log rotation is configured per site policy
 # This script provides PRINT ONLY (site specific)

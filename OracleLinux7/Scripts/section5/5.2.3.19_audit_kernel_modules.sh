@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.2.3.19
 # Ensure kernel module loading, unloading and modification is collected
 # OCI compatible - handles ksplice symlinks

@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 5.1.1.5
 # Ensure logging is configured
 # This script provides PRINT ONLY (environment specific)
