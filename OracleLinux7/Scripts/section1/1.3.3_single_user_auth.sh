@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.3.3 Ensure authentication required for single user mode
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # WARNING: This affects system recovery - DO NOT APPLY AUTOMATICALLY

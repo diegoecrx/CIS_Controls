@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.2.5 Ensure updates, patches, and additional security software are installed
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

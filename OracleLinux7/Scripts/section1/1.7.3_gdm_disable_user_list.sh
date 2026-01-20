@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.7.3 Ensure GDM disable-user-list option is enabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

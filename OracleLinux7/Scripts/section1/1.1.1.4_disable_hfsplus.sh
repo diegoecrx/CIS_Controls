@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:$PATH"
 # CIS Oracle Linux 7 - 1.1.1.4 Ensure hfsplus kernel module is not available
 # This script disables the hfsplus kernel module
 # Compatible with OCI (Oracle Cloud Infrastructure)

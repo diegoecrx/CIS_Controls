@@ -1,4 +1,5 @@
-﻿#!/bin/bash
+#!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.3.1 Ensure bootloader password is set
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

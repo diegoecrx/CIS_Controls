@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.6.5 Ensure access to /etc/issue is configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

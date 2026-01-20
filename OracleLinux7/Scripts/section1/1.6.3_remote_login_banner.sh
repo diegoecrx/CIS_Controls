@@ -1,4 +1,5 @@
-﻿#!/bin/bash
+#!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.6.3 Ensure remote login warning banner is configured properly
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

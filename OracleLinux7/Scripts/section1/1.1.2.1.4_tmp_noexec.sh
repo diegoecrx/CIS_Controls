@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.1.2.1.4 Ensure noexec option set on /tmp partition
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # WARNING: Setting noexec may prevent installation of some 3rd party software

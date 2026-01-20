@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.7.10 Ensure XDMCP is not enabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # WARNING: This affects remote display - exercise caution

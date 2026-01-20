@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.1.2.3.3 Ensure nosuid option set on /home partition
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

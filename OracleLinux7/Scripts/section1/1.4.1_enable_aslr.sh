@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:$PATH"
 # CIS Oracle Linux 7 - 1.4.1 Ensure ASLR is enabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

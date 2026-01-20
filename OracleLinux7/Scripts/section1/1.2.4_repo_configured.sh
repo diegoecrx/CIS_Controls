@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.2.4 Ensure package manager repositories are configured
 # Compatible with OCI (Oracle Cloud Infrastructure)
 # NOTE: Manual review required

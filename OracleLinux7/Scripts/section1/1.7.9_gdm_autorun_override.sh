@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.7.9 Ensure GDM autorun-never is not overridden
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

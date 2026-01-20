@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.7.6 Ensure GDM automatic mounting of removable media is disabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

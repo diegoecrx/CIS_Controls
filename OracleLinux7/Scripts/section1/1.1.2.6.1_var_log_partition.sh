@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.1.2.6.1 Ensure separate partition exists for /var/log
 # Compatible with OCI (Oracle Cloud Infrastructure)
 

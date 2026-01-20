@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 - 1.4.3 Ensure core dump backtraces are disabled
 # Compatible with OCI (Oracle Cloud Infrastructure)
 
