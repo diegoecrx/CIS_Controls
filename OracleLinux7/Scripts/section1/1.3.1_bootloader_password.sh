@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # CIS Oracle Linux 7 - 1.3.1 Ensure bootloader password is set
 # Compatible with OCI (Oracle Cloud Infrastructure)
 
@@ -12,9 +12,19 @@ fi
 
 echo "Setting bootloader password..."
 
-# Set the password using grub2-setpassword with expect-style input
 # Password: @NessusAudit#2014_
-echo -e "@NessusAudit#2014_\n@NessusAudit#2014_" | grub2-setpassword
+PASSWORD="@NessusAudit#2014_"
+
+# Generate the password hash using grub2-mkpasswd-pbkdf2
+HASH=$(echo -e "$PASSWORD\n$PASSWORD" | grub2-mkpasswd-pbkdf2 2>/dev/null | grep -o 'grub.pbkdf2.sha512.*')
+
+if [ -z "$HASH" ]; then
+    echo "FAIL: Unable to generate password hash"
+    exit 1
+fi
+
+# Write directly to user.cfg
+echo "GRUB2_PASSWORD=$HASH" > /boot/grub2/user.cfg
 
 # Verify
 if [ -f /boot/grub2/user.cfg ] && grep -q "GRUB2_PASSWORD" /boot/grub2/user.cfg; then
