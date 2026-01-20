@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 2.2.22
 # Ensure only approved services are listening on a network interface
 # This script lists listening services for manual review

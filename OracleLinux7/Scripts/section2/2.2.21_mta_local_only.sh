@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 2.2.21
 # Ensure mail transfer agents are configured for local-only mode
 # This script configures postfix for local-only mail

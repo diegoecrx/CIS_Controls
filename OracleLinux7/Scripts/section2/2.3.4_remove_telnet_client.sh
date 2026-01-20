@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 2.3.4
 # Ensure telnet client is not installed
 # This script removes telnet package

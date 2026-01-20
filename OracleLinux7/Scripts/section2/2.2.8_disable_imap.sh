@@ -1,4 +1,5 @@
 #!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 2.2.8
 # Ensure message access server services are not in use
 # This script stops and masks dovecot and cyrus-imapd services

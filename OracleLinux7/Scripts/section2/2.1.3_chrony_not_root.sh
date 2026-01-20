@@ -1,4 +1,5 @@
-#!/bin/bash
+﻿#!/bin/bash
+export PATH="/sbin:/usr/sbin:/bin:/usr/bin:$PATH"
 # CIS Oracle Linux 7 Benchmark - 2.1.3
 # Ensure chrony is not run as the root user
 # This script configures chronyd to run as chrony user
@@ -14,21 +15,16 @@ if [ -f "$CHRONYD_SYSCONFIG" ]; then
     cp "$CHRONYD_SYSCONFIG" "${CHRONYD_SYSCONFIG}.bak.$(date +%Y%m%d%H%M%S)"
 fi
 
-# Check if OPTIONS line exists and configure
-if grep -q '^OPTIONS=' "$CHRONYD_SYSCONFIG" 2>/dev/null; then
-    # Check if running as root
-    if grep -Pq '^\s*OPTIONS="?.*-u\s+root' "$CHRONYD_SYSCONFIG"; then
-        echo "chronyd is configured to run as root. Fixing..."
-        sed -i 's/^\s*OPTIONS=.*/OPTIONS="-u chrony"/' "$CHRONYD_SYSCONFIG"
-    else
-        echo "chronyd is not running as root."
-    fi
-else
-    # Add OPTIONS line
-    echo 'OPTIONS="-u chrony"' >> "$CHRONYD_SYSCONFIG"
-fi
+# Set OPTIONS to run as chrony user (overwrites any existing configuration)
+echo 'OPTIONS=-u chrony' > "$CHRONYD_SYSCONFIG"
+
+echo "Configured /etc/sysconfig/chronyd with OPTIONS=-u chrony"
 
 # Restart chronyd to apply changes
-systemctl try-reload-or-restart chronyd.service
+systemctl restart chronyd.service
 
-echo "CIS 2.1.3 remediation complete - chronyd configured to run as chrony user."
+# Verify
+echo "Verifying chronyd is running as chrony user:"
+ps -ef | grep chronyd | grep -v grep
+
+echo "CIS 2.1.3 remediation complete."
